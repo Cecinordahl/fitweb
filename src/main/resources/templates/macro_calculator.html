@@ -3,83 +3,121 @@
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>Macro Calculator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 
 
 
 
 <body>
-<form name="macroCalculator" onsubmit="return calculatedMacros()">
+
     <label>Age
-        <input name="age" type="number" min="16" max="150">
-    </label>
-
-    <p></p>
-
-    <label>Gender<br>
-        <input type="radio" name="gender" id="male">Male
-        <input type="radio" name="gender" id="female">Female
-    </label><p></p>
-
-    <label>Height<br>
-        <input type="radio" name="height">cm
-        <input type="radio" name="height">in<br>
-        <input type="number">
-    </label><p></p>
-
-    <label>Weight<br>
-        <input type="radio" name="weight">kg
-        <input type="radio" name="weight">lbs<br>
-        <input type="number">
-    </label><p></p>
-
-    <label>Activity Level
-        <br><input type="radio" name="activityLevel">Sedentary (Little or no exercise)
-        <br><input type="radio" name="activityLevel">Lightly active (Light exercise/sports 3-5 days a week)
-        <br><input type="radio" name="activityLevel">Moderately active (Moderate exercise/sports 3-5 days a week)
-        <br><input type="radio" name="activityLevel">Very active (Hard exercise/sports 6-7 days a week)
-        <br><input type="radio" name="activityLevel">Extra active (Hard exercise/sports 6-7 days a week, plus physical job)
-    </label><p></p>
-
-    <label>Goal
-        <br><input type="radio" name="goal">Maintain current weight
-        <br><input type="radio" name="goal">Lose weight
-        <br><input type="radio" name="goal">Gain weight
-
+        <input name="age" type="number" min="16" max="150" required>
     </label>
     <p></p>
-    <input type="submit" value="Submit">
-</form>
+
+   <label>Gender<br>
+       <input type="radio" name="gender" value="male" required>Male
+       <input type="radio" name="gender" value="female">Female
+   </label>
+    <p></p>
+
+   <label>Height<br>
+       <!-- <input type="radio" name="height">cm
+       <input type="radio" name="height">in<br> -->
+       <input type="number" name="height" required>
+   </label><p></p>
+
+   <label>Weight<br>
+       <!-- <input type="radio" name="weight" id="kg">kg
+       <input type="radio" name="weight" id="lbs">lbs<br> -->
+       <input type="number" name="weight" required>
+   </label><p></p>
+
+   <label>Activity Level
+       <br><input type="radio" name="activityLevel" value="sedentary" required>Sedentary (Little or no exercise)
+       <br><input type="radio" name="activityLevel" value="lightly">Lightly active (Light exercise/sports 3-5 days a week)
+       <br><input type="radio" name="activityLevel" value="moderately">Moderately active (Moderate exercise/sports 3-5 days a week)
+       <br><input type="radio" name="activityLevel" value="active">Very active (Hard exercise/sports 6-7 days a week)
+       <br><input type="radio" name="activityLevel" value="extra">Extra active (Hard exercise/sports 6-7 days a week, plus physical job)
+   </label><p></p>
+
+   <label>Goal
+       <br><input type="radio" name="goal" value="maintain" required>Maintain current weight
+       <br><input type="radio" name="goal" value="lose">Lose weight
+       <br><input type="radio" name="goal" value="gain">Gain weight
+
+   </label>
+    <p></p>
 
 
+    <button onclick="calculate()">Calculate</button>
+    <p id="inputsPrinted"></p>
 
 
 <script>
 
-
-
-    let age = document.forms["macroCalculator"]["age"].value;
-    let gender = document.forms["macroCalculator"]["gender"].value;
-    let height = document.forms["macroCalculator"]["height"].value;
-    let weight = document.forms["macroCalculator"]["weight"].value;
-    let activityLevel = document.forms["macroCalculator"]["activityLevel"].value;
-    let goal = document.forms["macroCalculator"]["goal"].value;
-
-
-    function calculatedMacros() {
-
-        if (age == "" || gender == "" || height == "" || weight == "" || activityLevel == "" || goal == "") {
-            alert("All fields must be filled out");
-            return false;
-        } else{
-            alert("great")
+    function checkActivityLevel(activityLevel, result) {
+        console.log(activityLevel)
+        if (activityLevel == "sedentary") {
+            return result * 1.2;
+        } else if (activityLevel == "lightly") {
+            return result * 1.375;
+        } else if (activityLevel == "moderately") {
+            return result * 1.55;
+        } else if (activityLevel == "active") {
+            return result * 1.725;
+        } else {
+            return result * 1.9;
         }
     }
 
-    function calculate(){
-        if (gender.id == )
+    function checkGender(gender, weight, height, age) {
+        console.log("Gender: " + gender +
+            ", weight: " + weight +
+            ", height: " + height +
+            ", age: " + age)
+        if (gender == "male") {
+            return 10 * weight + 6.25 * height - 5 * age + 5;
+        } else {
+            return 10 * weight + 6.25 * height - 5 * age - 161;
+        }
     }
+
+    function checkGoal(goal, result) {
+        console.log(goal)
+        if (goal == "lose") {
+            result = result * 0.9;
+        } else if (goal == "gain") {
+            result += 500;
+        }
+        return result;
+    }
+
+    function calculate(){
+        let age = document.querySelector('input[name="age"]').value;
+        let height = document.querySelector('input[name="height"]').value;
+        let activityLevel = document.querySelector('input[name="activityLevel"]:checked').value;
+        let goal = document.querySelector('input[name="goal"]:checked').value;
+        let gender = document.querySelector('input[name="gender"]:checked').value;
+        let weight = document.querySelector('input[name="weight"]').value;
+        let result;
+
+        result = checkGender(gender, weight, height, age);
+        result = checkActivityLevel(activityLevel, result);
+        result = checkGoal(goal, result);
+
+
+        displayResult(result);
+    }
+
+
+
+
+        function displayResult(result){
+            document.getElementById("inputsPrinted").innerHTML = result;
+        }
+
 
 
 
