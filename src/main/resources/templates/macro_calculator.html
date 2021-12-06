@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Macro Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+
+
+<body>
+<form name="macroCalculator" onsubmit="return calculatedMacros()">
+    <label>Age
+        <input name="age" type="number" min="16" max="150">
+    </label>
+
+    <p></p>
+
+    <label>Gender<br>
+        <input type="radio" name="gender" id="male">Male
+        <input type="radio" name="gender" id="female">Female
+    </label><p></p>
+
+    <label>Height<br>
+        <input type="radio" name="height">cm
+        <input type="radio" name="height">in<br>
+        <input type="number">
+    </label><p></p>
+
+    <label>Weight<br>
+        <input type="radio" name="weight">kg
+        <input type="radio" name="weight">lbs<br>
+        <input type="number">
+    </label><p></p>
+
+    <label>Activity Level
+        <br><input type="radio" name="activityLevel">Sedentary (Little or no exercise)
+        <br><input type="radio" name="activityLevel">Lightly active (Light exercise/sports 3-5 days a week)
+        <br><input type="radio" name="activityLevel">Moderately active (Moderate exercise/sports 3-5 days a week)
+        <br><input type="radio" name="activityLevel">Very active (Hard exercise/sports 6-7 days a week)
+        <br><input type="radio" name="activityLevel">Extra active (Hard exercise/sports 6-7 days a week, plus physical job)
+    </label><p></p>
+
+    <label>Goal
+        <br><input type="radio" name="goal">Maintain current weight
+        <br><input type="radio" name="goal">Lose weight
+        <br><input type="radio" name="goal">Gain weight
+
+    </label>
+    <p></p>
+    <input type="submit" value="Submit">
+</form>
+
+
+
+
+<script>
+
+
+
+    let age = document.forms["macroCalculator"]["age"].value;
+    let gender = document.forms["macroCalculator"]["gender"].value;
+    let height = document.forms["macroCalculator"]["height"].value;
+    let weight = document.forms["macroCalculator"]["weight"].value;
+    let activityLevel = document.forms["macroCalculator"]["activityLevel"].value;
+    let goal = document.forms["macroCalculator"]["goal"].value;
+
+
+    function calculatedMacros() {
+
+        if (age == "" || gender == "" || height == "" || weight == "" || activityLevel == "" || goal == "") {
+            alert("All fields must be filled out");
+            return false;
+        } else{
+            alert("great")
+        }
+    }
+
+    function calculate(){
+        if (gender.id == )
+    }
+
+
+
+</script>
+
+</body>
+
+</html>
