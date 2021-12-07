@@ -25,13 +25,13 @@
    <label>Height<br>
        <!-- <input type="radio" name="height">cm
        <input type="radio" name="height">in<br> -->
-       <input type="number" name="height" required>
+       <input type="number" name="height" min="150" required>
    </label><p></p>
 
    <label>Weight<br>
        <!-- <input type="radio" name="weight" id="kg">kg
        <input type="radio" name="weight" id="lbs">lbs<br> -->
-       <input type="number" name="weight" required>
+       <input type="number" name="weight" min="30" required>
    </label><p></p>
 
    <label>Activity Level
@@ -46,9 +46,17 @@
        <br><input type="radio" name="goal" value="maintain" required>Maintain current weight
        <br><input type="radio" name="goal" value="lose">Lose weight
        <br><input type="radio" name="goal" value="gain">Gain weight
+   </label><p></p>
 
-   </label>
-    <p></p>
+
+    <p>The acceptable macronutrient distribution ranges (AMDR) are 45–65% of your daily calories from carbs, 20–35% from fats and 10–35% from protein. </p>
+
+    <label>Proteins
+        <input type="number" name="proteins" value="30" min="0" max="100"></label>
+    <label>Carbs
+        <input type="number" name="carbs" value="40" min="0" max="100"></label>
+    <label>Fats
+        <input type="number" name="fats" value="30" min="0" max="100"></label>
 
 
     <button onclick="calculate()">Calculate</button>
@@ -58,7 +66,6 @@
 <script>
 
     function checkActivityLevel(activityLevel, result) {
-        console.log(activityLevel)
         if (activityLevel == "sedentary") {
             return result * 1.2;
         } else if (activityLevel == "lightly") {
@@ -73,10 +80,6 @@
     }
 
     function checkGender(gender, weight, height, age) {
-        console.log("Gender: " + gender +
-            ", weight: " + weight +
-            ", height: " + height +
-            ", age: " + age)
         if (gender == "male") {
             return 10 * weight + 6.25 * height - 5 * age + 5;
         } else {
@@ -85,7 +88,6 @@
     }
 
     function checkGoal(goal, result) {
-        console.log(goal)
         if (goal == "lose") {
             result = result * 0.9;
         } else if (goal == "gain") {
@@ -101,22 +103,36 @@
         let goal = document.querySelector('input[name="goal"]:checked').value;
         let gender = document.querySelector('input[name="gender"]:checked').value;
         let weight = document.querySelector('input[name="weight"]').value;
+
+        let carbs = document.querySelector('input[name="carbs"]').value;
+        let fats = document.querySelector('input[name="fats"]').value;
+        let proteins = document.querySelector('input[name="proteins"]').value;
+
         let result;
 
         result = checkGender(gender, weight, height, age);
         result = checkActivityLevel(activityLevel, result);
         result = checkGoal(goal, result);
 
+        proteins = result * proteins / 100;
+        fats = result * fats / 100;
+        carbs = result * carbs / 100;
 
-        displayResult(result);
+        displayResult(result, proteins, carbs, fats);
     }
 
 
 
 
-        function displayResult(result){
-            document.getElementById("inputsPrinted").innerHTML = result;
-        }
+    function displayResult(result, proteins, carbs, fats){
+        document.getElementById("inputsPrinted").innerHTML =
+            "<span>Daily calories: </span>" + parseInt(result) +
+            "<br><br><span>Macros</span>" +
+            "<br><span>Protein: </span>" + parseInt(proteins) + "<span> calories / </span>" + parseInt(proteins/4) + "<span> grams per day</span>" +
+            "<br><span>Carbohydrates: </span>" + parseInt(carbs) + "<span> calories / </span>" + parseInt(carbs/4) + "<span> grams per day</span>" +
+            "<br><span>Fat: </span>" + parseInt(fats) + "<span> calories / </span>" + parseInt(fats/9) + "<span> grams per day</span>";
+            }
+
 
 
 
