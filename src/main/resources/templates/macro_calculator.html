@@ -62,6 +62,11 @@
     <button onclick="calculate()">Calculate</button>
     <p id="inputsPrinted"></p>
 
+    <form th:action="@{/mealPlan}" method="post">
+        <input id="dailyCalories" type="number" th:name="dailyCalories" style="display: none">
+        <input type="submit" value="Create meal plan" id="submitPostMealPlan" style="display: none">
+    </form>
+
 
 <script>
 
@@ -117,6 +122,9 @@
         proteins = result * proteins / 100;
         fats = result * fats / 100;
         carbs = result * carbs / 100;
+
+        document.getElementById("dailyCalories").value = parseInt(result);
+        document.getElementById("submitPostMealPlan").style.display = "block";
 
         displayResult(result, proteins, carbs, fats);
     }
